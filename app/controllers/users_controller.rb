@@ -2,9 +2,7 @@ class UsersController < ApplicationController
 
   def create
     User.create(user_params)
-  end
-
-  def update
+    render 'users/create'
   end
 
   private
