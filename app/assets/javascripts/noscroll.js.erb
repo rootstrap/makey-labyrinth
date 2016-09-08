@@ -1,0 +1,817 @@
+var TILE_SIZE = 78;
+var BOUNCE_MOVE = 20;
+var JUMP_RESIZE = 10;
+var GRID_LENGTH = 8;
+var TIMEOUT = 600;
+var H_HOLE = 8;
+var V_HOLE = 9;
+tile_index = 1;//Math.floor((Math.random() * 4));
+lose = false;
+allMovements = [];
+
+
+function handleKeypress(event) {
+
+  if(Game.canSetMovement){
+    if(Game.countDraw == 5){
+      Game.canvasX = 0;
+      Game.canvasY += 60;
+      Game.countDraw = 0;
+    }
+    else if(Game.countDraw < 5 && !Game.firstTime){
+      Game.canvasX += 60;
+    }
+    else if(Game.firstTime){
+      Game.canvasX = 0;
+    }
+
+  switch(event.keyCode) {
+        case 32: {
+          console.log(Game.arrowJump)
+            Game.canvasMove.drawImage(Game.arrowJump, Game.canvasX, Game.canvasY);
+            Game.countDraw++;
+            Game.firstTime = false;
+            allMovements.push('j');
+            break;
+        }
+        case 37: {
+            Game.canvasMove.drawImage(Game.arrowLeft, Game.canvasX, Game.canvasY);
+            Game.countDraw++;
+            Game.firstTime = false;
+            allMovements.push('l');
+            break;
+        }
+        case 38: {
+            console.log(Game.arrowUp);
+            Game.canvasMove.drawImage(Game.arrowUp, Game.canvasX, Game.canvasY);
+            Game.countDraw++;
+            Game.firstTime = false;
+            allMovements.push('u');
+            break;
+        }
+        case 39: {
+            Game.canvasMove.drawImage(Game.arrowRight, Game.canvasX, Game.canvasY);
+            Game.countDraw++;
+            Game.firstTime = false;
+            allMovements.push('r');
+            break;
+        }
+        case 40: {
+            Game.canvasMove.drawImage(Game.arrowDown, Game.canvasX, Game.canvasY);
+            Game.countDraw++;
+            Game.firstTime = false;
+            allMovements.push('d');
+            break;
+        }
+        default: {
+            //not a key we care about
+            break;
+        }
+    }
+   //   console.log(allMovements)
+    }
+}
+
+var map = {
+    cols: GRID_LENGTH,
+    rows: GRID_LENGTH,
+    tsize: TILE_SIZE,
+    tiles: [[
+        1, 1, 1, 5, 1, 1, 1, 1,
+        1, 1, 1, 7, 8, 3, 6, 1,
+        1, 1, 1, 1, 1, 1, 5, 1,
+        1, 1, 1, 1, 1, 1, 9, 1,
+        1, 1, 2, 3, 3, 3, 4, 1,
+        1, 1, 5, 1, 1, 1, 1, 1,
+        1, 1, 5, 1, 1, 1, 1, 1,
+        2, 3, 4, 1, 1, 1, 1, 1
+    ], [
+        1, 1, 1, 1, 5, 1, 1, 1,
+        1, 1, 1, 1, 7, 6, 1, 1,
+        1, 1, 1, 1, 1, 9, 1, 1,
+        1, 1, 1, 1, 1, 7, 6, 1,
+        2, 3, 6, 1, 1, 1, 5, 1,
+        5, 1, 5, 1, 1, 2, 4, 1,
+        5, 1, 5, 1, 1, 5, 1, 1,
+        5, 1, 7, 3, 8, 4, 1, 1
+    ], [
+        1, 1, 1, 1, 5, 1, 1, 1,
+        1, 1, 1, 1, 9, 1, 1, 1,
+        1, 2, 8, 3, 4, 1, 1, 1,
+        1, 5, 1, 1, 1, 1, 1, 1,
+        1, 7, 3, 3, 3, 3, 6, 1,
+        1, 1, 1, 1, 1, 1, 5, 1,
+        1, 1, 1, 2, 3, 3, 4, 1,
+        1, 1, 1, 5, 1, 1, 1, 1
+    ], [
+        1, 1, 2, 8, 3, 4, 1, 1,
+        1, 2, 4, 1, 1, 1, 1, 1,
+        1, 9, 1, 1, 1, 1, 1, 1,
+        1, 7, 6, 1, 1, 1, 1, 1,
+        1, 1, 7, 6, 1, 1, 1, 1,
+        1, 1, 1, 5, 1, 1, 1, 1,
+        1, 1, 1, 7, 6, 1, 1, 1,
+        1, 1, 1, 1, 7, 3, 3, 6
+    ]],
+    getTileAux: function(col, row) {
+        return this.tiles[tile_index][row * GRID_LENGTH + col];
+    },
+};
+
+movements = {
+  //allMovements: ['u', 'r', 'r', 'u', 'u', 'u', 'r', 'r', 'r', 'r', 'u', 'u', 'u', 'l', 'l', 'l', 'u'],
+  allMovements,//: ['u','r', 'u', 'j', 'r', 'j', 'r', 'u', 'u', 'j', 'l', 'j', 'u', 'u'],//, 'u', 'j', 'l', 'r', 'j', 'd', 'u', 'j', 'l', 'j'],
+  // allMovements: [ 'u', 'l', 'r','r', 'u', 'u', 'u', 'r','r','r','r', 'd' , 'r', 'u','d', 'u','u', 'u', 'l',
+  //                 'l', 'l','l','u','u' ], //r','l', 'd', 'u', 'j'
+  //*/
+  getMovement: function(pos){
+    return this.allMovements[pos];
+  },
+
+}
+
+Game.load = function () {
+    return [
+        Loader.loadImage('upLeft', "<%= asset_path('curvo1.jpg') %>"),
+        Loader.loadImage('downLeft', "<%= asset_path('curvo2.jpg') %>"),
+        Loader.loadImage('upRight', "<%= asset_path('curvo3.jpg') %>"),
+        Loader.loadImage('downRight', "<%= asset_path('curvo4.jpg') %>"),
+        Loader.loadImage('upDown', "<%= asset_path('recti1.jpg') %>"),
+        Loader.loadImage('leftRight', "<%= asset_path('recto2.jpg') %>"),
+        Loader.loadImage('tiles', "<%= asset_path('solido1.jpg') %>"),
+        Loader.loadImage('npc', "<%= asset_path('character.png') %>"),
+        Loader.loadImage('v_hole', "<%= asset_path('recti1hole.png') %>"),
+        Loader.loadImage('h_hole', "<%= asset_path('recto2hole.png') %>"),
+        Loader.loadImage('arrowLeft', "<%= asset_path('left.png') %>"),
+        Loader.loadImage('arrowRight', "<%= asset_path('right.png') %>"),
+        Loader.loadImage('arrowUp', "<%= asset_path('up.png') %>"),
+        Loader.loadImage('arrowDown', "<%= asset_path('down.png') %>"),
+        Loader.loadImage('arrowJump', "<%= asset_path('jump.png') %>"),
+    ];
+};
+
+
+Game.init = function () {
+    this.solid = Loader.getImage('tiles');
+    this.upLeft = Loader.getImage('upLeft');
+    this.downLeft = Loader.getImage('downLeft');
+    this.upRight = Loader.getImage('upRight');
+    this.downRight = Loader.getImage('downRight');
+    this.upDown = Loader.getImage('upDown');
+    this.leftRight = Loader.getImage('leftRight');
+    this.arrowLeft = Loader.getImage('arrowLeft');
+    this.arrowRight = Loader.getImage('arrowRight');
+    this.arrowUp = Loader.getImage('arrowUp');
+    this.arrowDown = Loader.getImage('arrowDown');
+    this.arrowJump = Loader.getImage('arrowJump');
+    this.h = Loader.getImage('h_hole');
+    this.v = Loader.getImage('v_hole');
+    this.npc = Loader.getImage('npc');
+    if (tile_index == 0){
+      this.posX = 0;
+      this.posY = 8;
+      this.winPosX = 3;
+      this.winPosY = 0;
+      this.chip.style.left = '0px';
+
+    } else if (tile_index == 1){
+      this.posX = 0;
+      this.posY = 8;
+      this.winPosX=4;
+      this.winPosY=0;
+      this.chip.style.left = '0px';
+    } else if (tile_index == 2){
+      this.posX = 3;
+      this.posY = 8;
+      this.winPosX=4;
+      this.winPosY=0;
+      this.chip.style.left = '234px';
+    } else if(tile_index == 3){
+      this.posX = 7;
+      this.posY = 8;
+      this.winPosX=5;
+      this.winPosY=0;
+      this.chip.style.left = '546px';
+    }
+
+
+    this.canvasX = 0;
+    this.canvasY = 0;
+    this.countDraw = 0;
+    this.firstTime = true;
+    this.canSetMovement = true;
+
+    this.chip.style.bottom = '-' + TILE_SIZE + 'px';
+
+    this.timeout = TIMEOUT;
+
+};
+
+Game.update = function (delta) {
+};
+
+Game.render = function () {
+
+    for (var c = 0; c < map.cols; c++) {
+        for (var r = 0; r < map.rows; r++) {
+
+          var tile = map.getTileAux(c,r);
+
+            if(tile == 1){
+                this.ctx.drawImage(this.solid, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 2){
+                this.ctx.drawImage(this.downRight, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 3){
+                this.ctx.drawImage(this.leftRight, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 4) {
+              this.ctx.drawImage(this.upRight, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 5) {
+              this.ctx.drawImage(this.upDown, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 6) {
+              this.ctx.drawImage(this.downLeft, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 7) {
+              this.ctx.drawImage(this.upLeft, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 8){
+                this.ctx.drawImage(this.h, c * map.tsize, r * map.tsize);
+            }
+            if(tile == 9){
+                this.ctx.drawImage(this.v, c * map.tsize, r * map.tsize);
+            }
+        }
+    }
+
+     this._drawGrid();
+};
+
+Game._drawGrid = function () {
+  console.log('hooolaaa');
+    var width = map.cols * map.tsize;
+    var height = map.rows * map.tsize;
+
+    var x, y;
+    for (var r = 0; r < map.rows; r++) {
+        y = r * map.tsize;
+        x = 0
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(width, y);
+        this.ctx.strokeStyle = '#ffffff'
+        this.ctx.stroke();
+    }
+    for (var c = 0; c < map.cols; c++) {
+        x = c * map.tsize;
+        y = 0
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x, height);
+        this.ctx.strokeStyle = '#ffffff'
+        this.ctx.stroke();
+    }
+
+};
+
+Game.moveChip = function (num, bounce, jump, in_hole, timeout, cont, lastMovement, nextMovement) {
+ setTimeout(function() {
+    var movement = movements.getMovement(num);
+
+    if (!bounce && !jump && !in_hole){
+        console.log(movement)
+      switch(movement){
+        case 'u':
+          console.log(Game.posX, Game.posY, map.getTileAux(Game.posX, Game.posY-1), validMovement('u', Game.posX, Game.posY), !(isAPit(Game.posX, Game.posY-1)) )
+          if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY) &&
+              !(isAPit(Game.posX, Game.posY-1))){
+
+              this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
+              Game.posY -= 1;
+              console.log('a')
+          }else if (movement == 'u' && !(isAPit(Game.posX, Game.posY-1))) {
+
+              moveUp();
+              cont++;
+              bounce = true;
+              console.log('b')
+
+          }  else if(isAPit(Game.posX, Game.posY-1)){
+
+              this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
+              Game.posY -= 1;
+              in_hole = true;
+              console.log('c')
+
+          }
+          break;
+        case 'd':
+          if (map.getTileAux(Game.posX , Game.posY+1) !== 1 && validMovement('d', Game.posX, Game.posY)
+              && !isAPit(Game.posX , Game.posY+1)){
+              this.chip.style.bottom = parseInt(this.chip.style.bottom) - TILE_SIZE + 'px';
+              Game.posY += 1
+          } else if(movement == 'd' && !isAPit(Game.posX , Game.posY+1)) {
+              moveDown();
+              cont++;
+              bounce = true;
+          }else if(isAPit(Game.posX , Game.posY+1)){
+              this.chip.style.bottom = parseInt(this.chip.style.bottom) - TILE_SIZE + 'px';
+              Game.posY += 1
+              in_hole = true;
+          }
+          break;
+        case 'r':
+
+          if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && validMovement('r', Game.posX, Game.posY)
+              && !isAPit(Game.posX+1, Game.posY)) {
+              this.chip.style.left = parseInt(this.chip.style.left) + TILE_SIZE + 'px';
+              Game.posX += 1
+
+          } else if( !isAPit(Game.posX+1, Game.posY) && movement == 'r') {
+              moveRight();
+              cont++;
+              bounce = true;
+
+          } else if(isAPit(Game.posX+1, Game.posY)) {
+
+              this.chip.style.left = parseInt(this.chip.style.left) + TILE_SIZE + 'px';
+              Game.posX += 1
+              in_hole = true;
+
+          }
+          break;
+        case 'l':
+          if(map.getTileAux(Game.posX - 1 , Game.posY) !== 1 && validMovement('l', Game.posX, Game.posY)
+              && !isAPit(Game.posX - 1 , Game.posY)){
+            this.chip.style.left = parseInt(this.chip.style.left) - TILE_SIZE + 'px';
+            Game.posX -= 1
+          } else if(movement == 'l' && !isAPit(Game.posX - 1 , Game.posY)) {
+            moveLeft();
+            cont++;
+            bounce = true;
+          }else if(isAPit(Game.posX - 1 , Game.posY)){
+            this.chip.style.left = parseInt(this.chip.style.left) - TILE_SIZE + 'px';
+            Game.posX -= 1;
+            in_hole = true;
+          }
+          break;
+        case 'j':
+          jump = true;
+          switch(lastMovement){
+            case 'start':
+              if (isHoleUp(9,12,13)){
+                this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
+                Game.posY -= 1;
+                addJumpEffect();
+                if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY)){
+                  nextMovement = 'u';
+                } else if (map.getTileAux(Game.posX-1, Game.posY) !== 1 && validMovement('l', Game.posX, Game.posY)){
+                  nextMovement = 'l';
+                } else if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && validMovement('r', Game.posX, Game.posY)){
+                  nextMovement = 'r';
+                }
+              } else {
+                addJumpEffect();
+                nextMovement = 'none';
+              }
+              break;
+            case 'u':
+              if (map.getTileAux(Game.posX, Game.posY) == 5){
+                nextMovement = jumpUp()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 2){
+                nextMovement = jumpRight()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 6){
+                nextMovement = jumpLeft()
+              }
+              break;
+            case 'd':
+              if (map.getTileAux(Game.posX, Game.posY) == 5){
+                nextMovement = jumpUp()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 2){
+                nextMovement = jumpRight()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 6){
+                nextMovement = jumpLeft()
+              }
+              break;
+            case 'l':
+              if (map.getTileAux(Game.posX, Game.posY) == 3){
+                nextMovement = jumpLeft()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 2){
+                nextMovement = jumpDown()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 7){
+                nextMovement = jumpUp()
+              }
+              break;
+            case 'r':
+              if (map.getTileAux(Game.posX, Game.posY) == 3){
+                nextMovement = jumpRight()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 4){
+                nextMovement = jumpUp()
+              } else if (map.getTileAux(Game.posX, Game.posY) == 6){
+                nextMovement = jumpDown()
+              }
+              break;
+            case 'j':
+              addJumpEffect();
+              nextMovement = 'none';
+            break;
+          }
+          break;
+      }
+      if (!bounce){
+        lastMovement = movement;
+      }
+    } else if (bounce) {
+      switch(movement){
+        case 'u':
+          values = bounceUp(cont, bounce);
+          cont = values[0];
+          bounce = values[1];
+          break;
+        case 'd':
+          values = bounceDown(cont, bounce);
+          cont = values[0];
+          bounce = values[1];
+          break;
+        case 'l':
+          values = bounceLeft(cont, bounce);
+          cont = values[0];
+          bounce = values[1];
+          break;
+        case 'r':
+          values = bounceRight(cont, bounce);
+          cont = values[0];
+          bounce = values[1];
+          break;
+      }
+    } else if (jump) {
+      jump = false;
+      switch(nextMovement){
+        case 'u':
+          this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
+          Game.posY -= 1;
+          break;
+        case 'd':
+          this.chip.style.bottom = parseInt(this.chip.style.bottom) - TILE_SIZE + 'px';
+          Game.posY += 1;
+          break;
+        case 'l':
+          this.chip.style.left = parseInt(this.chip.style.left) - TILE_SIZE + 'px';
+          Game.posX -= 1;
+          break;
+        case 'r':
+          this.chip.style.left = parseInt(this.chip.style.left) + TILE_SIZE + 'px';
+          Game.posX += 1;
+          break;
+        default:
+          console.log(nextMovement, 'entre aca');
+          break;
+      }
+      removeJumpEffect();
+    } else if (in_hole) {
+      this.chip.style.transform = 'scale(0.5) rotate(360deg)';
+
+      lose = true
+    }
+    if(lose || (num == movements.allMovements.length) ){
+      loseOrWin();
+    } else if (in_hole){
+      Game.moveChip(num, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement)
+    } else if (bounce){
+
+      Game.moveChip(num, bounce, jump, in_hole, 250, cont, lastMovement, nextMovement);
+    } else if (jump) {
+
+      Game.moveChip(num, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement);
+    } else if (num < movements.allMovements.length){
+
+      Game.moveChip(num+1, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement);
+    } else if (in_hole){
+      Game.moveChip(num, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement)
+    }
+  }, timeout);
+}
+
+bounceUp = function(cont, bounce){
+  if (cont % 2 == 1)
+  {
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) - BOUNCE_MOVE + 'px';
+  }
+  else
+  {
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) + BOUNCE_MOVE + 'px';
+  }
+  cont++;
+  if (cont == 4)
+  {
+    bounce = false;
+    cont = 0;
+  }
+    this.chip.style.transitionDuration = "1s";
+    return [cont, bounce];
+}
+
+bounceDown = function(cont, bounce){
+  if (cont % 2 == 1)
+  {
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) + BOUNCE_MOVE + 'px';
+  }
+  else
+  {
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) - BOUNCE_MOVE + 'px';
+  }
+  cont++;
+  if (cont == 4)
+  {
+    bounce = false;
+    cont = 0;
+  }
+    this.chip.style.transitionDuration = "1s";
+    return [cont, bounce];
+}
+
+bounceLeft = function(cont, bounce){
+  if (cont % 2 == 1)
+  {
+    this.chip.style.left = parseInt(this.chip.style.left) + BOUNCE_MOVE + 'px';
+  }
+  else
+  {
+    this.chip.style.left = parseInt(this.chip.style.left) - BOUNCE_MOVE + 'px';
+  }
+  cont++;
+  if (cont == 4)
+  {
+    bounce = false;
+    cont = 0;
+  }
+    this.chip.style.transitionDuration = "1s";
+    return [cont, bounce];
+}
+
+bounceRight = function(cont, bounce){
+  if (cont % 2 == 1)
+  {
+    this.chip.style.left = parseInt(this.chip.style.left) - BOUNCE_MOVE + 'px';
+  }
+  else
+  {
+    this.chip.style.left = parseInt(this.chip.style.left) + BOUNCE_MOVE + 'px';
+  }
+  cont++;
+  if (cont == 4)
+  {
+    bounce = false;
+    cont = 0;
+  }
+    this.chip.style.transitionDuration = "1s";
+    return [cont, bounce];
+}
+
+moveUp = function(){
+    this.chip.style.transitionDuration = "0.2s";
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) + BOUNCE_MOVE + 'px';
+}
+
+moveDown = function(){
+  this.chip.style.transitionDuration = "0.2s";
+  this.chip.style.bottom = parseInt(this.chip.style.bottom) - BOUNCE_MOVE + 'px';
+}
+
+moveLeft = function(){
+  this.chip.style.transitionDuration = "0.2s";
+  this.chip.style.left = parseInt(this.chip.style.left) - BOUNCE_MOVE + 'px';
+}
+
+moveRight = function(){
+  this.chip.style.transitionDuration = "0.2s";
+  this.chip.style.left = parseInt(this.chip.style.left) + BOUNCE_MOVE + 'px';
+}
+
+isAPit = function(posX, posY){
+  return map.getTileAux(posX, posY) >= 8 && map.getTileAux(posX, posY) <= 9;
+}
+
+validMovement = function(mov, posX, posY) {
+  if ( invalidLeft(mov, posX, posY) || invalidRight(mov, posX, posY) ||
+    invalidUp(mov, posY) || invalidDown(mov, posY)){
+    return false;
+  } else {
+    return true;
+  }
+}
+
+invalidDown = function(mov, posY){
+  return mov == 'd' && (posY == '7' || posY == '8');
+}
+
+invalidUp = function(mov, posY){
+  return mov == 'u' && posY == '0';
+}
+
+invalidRight = function(mov, posX, posY){
+  return (mov == 'r' && (posX == '7' || posY == '8')) ;
+}
+
+invalidLeft = function(mov, posX, posY){
+  return (mov == 'l' && (posX == '0' || posY == '8')) ;
+}
+
+
+jumpUp = function (){
+  if (isHoleUp(9,12,13)){
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
+    Game.posY -= 1;
+    addJumpEffect();
+    switch(map.getTileAux(Game.posX, Game.posY)){
+      case 9:
+        return 'u';
+      case 12:
+        return 'r';
+      case 13:
+        return 'l';
+    }
+  } else {
+    addJumpEffect();
+    return 'none';
+  }
+}
+
+jumpRight = function (){
+  if (isHoleRight(8,10,13)){
+    this.chip.style.left = parseInt(this.chip.style.left) + TILE_SIZE + 'px';
+    Game.posX += 1;
+    addJumpEffect();
+    switch(map.getTileAux(Game.posX, Game.posY)){
+      case 8:
+        return 'r';
+      case 10:
+        return 'u';
+      case 13:
+        return 'd';
+    }
+  }  else {
+    addJumpEffect();
+    return 'none';
+  }
+}
+
+jumpLeft = function (){
+  if (isHoleLeft(8,11,12)){
+    this.chip.style.left = parseInt(this.chip.style.left) - TILE_SIZE + 'px';
+    Game.posX -= 1;
+    addJumpEffect();
+    switch(map.getTileAux(Game.posX, Game.posY)){
+      case 8:
+        return 'l';
+      case 11:
+        return 'u';
+      case 12:
+        return 'd';
+    }
+  } else {
+    addJumpEffect();
+    return 'none';
+  }
+}
+
+jumpDown = function (){
+  if (isHoleDown(9,10,11)){
+    this.chip.style.bottom = parseInt(this.chip.style.bottom) - TILE_SIZE + 'px';
+    Game.posY += 1;
+    addJumpEffect();
+    switch(map.getTileAux(Game.posX, Game.posY)){
+      case 9:
+        return 'd';
+      case 10:
+        return 'l';
+      case 11:
+        return 'r';
+    }
+  } else {
+    addJumpEffect();
+    return 'none';
+  }
+}
+
+
+isHoleUp = function(tile1, tile2, tile3) {
+  return map.getTileAux(Game.posX, Game.posY-1) == tile1 || map.getTileAux(Game.posX, Game.posY-1) == tile2 || map.getTileAux(Game.posX, Game.posY-1) == tile3
+}
+
+isHoleRight = function(tile1, tile2, tile3) {
+  return map.getTileAux(Game.posX+1, Game.posY) == tile1 || map.getTileAux(Game.posX+1, Game.posY) == tile2 || map.getTileAux(Game.posX+1, Game.posY) == tile3
+}
+
+isHoleLeft = function(tile1, tile2, tile3) {
+  return map.getTileAux(Game.posX-1, Game.posY) == tile1 || map.getTileAux(Game.posX-1, Game.posY) == tile2 || map.getTileAux(Game.posX-1, Game.posY) == tile3
+}
+
+isHoleDown = function(tile1, tile2, tile3) {
+  return map.getTileAux(Game.posX, Game.posY+1) == tile1 || map.getTileAux(Game.posX, Game.posY+1) == tile2 || map.getTileAux(Game.posX, Game.posY+1) == tile3
+}
+
+addJumpEffect = function (){
+
+  this.chip.style.width =  parseInt(this.chip.offsetWidth) + JUMP_RESIZE + 'px';
+  this.chip.style.height =  parseInt(this.chip.offsetHeight) + JUMP_RESIZE + 'px';
+  this.chip.style.marginBottom =  '-5px';
+  this.chip.style.marginLeft =  '-5px';
+  this.chip.style.boxShadow = '0 0 60px #000';
+
+}
+
+removeJumpEffect = function (){
+  this.chip.style.marginBottom =  '0px';
+  this.chip.style.marginLeft =  '0px';
+  this.chip.style.boxShadow = 'none';
+  this.chip.style.width =  parseInt(this.chip.style.width) - JUMP_RESIZE + 'px';
+  this.chip.style.height =  parseInt(this.chip.style.height) - JUMP_RESIZE + 'px';
+}
+
+loseOrWin = function (){
+  if (!(Game.posX == Game.winPosX && Game.posY == Game.winPosY)) {
+    lose = true;
+
+  }
+
+  document.getElementById('user_won').value = !lose;
+  console.log(document.getElementById('user_won').value, 'user_won', lose);
+  if(lose){
+    allMovements = [];
+    setTimeout(
+      function() {
+
+        swal({ title: "YOU lose", text: "",
+           timer: 2500, showConfirmButton: false }
+             )}, 1000);
+        setTimeout( function() {
+          $('#myModal').modal('show')}, 3500);
+
+  } else {
+    setTimeout(
+      function() {
+        swal({ title: "YOU WIN", text: "",
+           timer: 2500, showConfirmButton: false }
+             )}, 1000);
+        setTimeout( function() {
+          $('#myModal').modal('show')}, 3500);
+
+  }
+
+
+}
+
+function getTimeRemaining(endtime) {
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor((t / 1000) % 60);
+  return {
+    'total': t,
+    'seconds': seconds
+  };
+}
+
+Game.initClock = function (id, endtime) {
+  var clock = Game.clock;
+  var secondsSpan = Game.clock.querySelector('.seconds');
+
+  function updateClock() {
+    var t = getTimeRemaining(endtime);
+    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+    if (t.total <= 0) {
+      clearInterval(timeinterval);
+      Game.canSetMovement = false;
+
+      swal({ title: "A jugar!", text: "A ver si tienes suerte",
+             timer: 2000, showConfirmButton: false });
+
+      setTimeout(function() {
+        hideMovements();
+        var audio = document.createElement("audio");
+        audio.src = "../assets/music.mp3";
+        audio.volume = 0.5;
+        audio.play();
+
+        Game.moveChip(0, false, false, false, TIMEOUT, 0, 'start', 'none');
+
+        //Game.moveChip(0, false, 600, 0);
+      }, 2500);
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+
+hideMovements = function (){
+  var movementDiv = document.getElementById('right');
+  movementDiv.className = 'hidden';
+
+}
+
+
+
