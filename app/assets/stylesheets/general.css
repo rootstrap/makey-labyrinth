@@ -2,3 +2,7 @@
 .clearfix {
   clear: both;
 }
+
+body {
+  overflow: hidden
+}

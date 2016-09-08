@@ -9,13 +9,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="page">
-  <div id="content">
-    <canvas oncontextmenu="return false;" id="labyrinth" width="250" height="250">
-  </div>
 
-</div>
-<%= yield %>
+  <div class="main-container">
+    <%= yield %>
+  </div>
 
 </body>
 </html>
