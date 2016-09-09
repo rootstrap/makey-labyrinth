@@ -79,14 +79,14 @@ Keyboard.isDown = function (keyCode) {
 
 var Game = {};
 
-Game.run = function (context, chip, clock, canvasMove) {
+Game.run = function (context, chip, clock, canvasMove, audio) {
     this.ctx = context;
     this._previousElapsed = 0;
     this.chip = chip;
     this.start = false;
     this.clock = clock;
-   // this.setMovement = setMovement;
     this.canvasMove = canvasMove;
+    this.audio = audio;
 
     var p = this.load();
     Promise.all(p).then(function (loaded) {
@@ -125,19 +125,17 @@ Game.handleKeypress = function(event) {};
 //
 
 var loadPage = function () {
-    console.log('window on load aca')
+    
     var context = document.getElementById('demo').getContext('2d');
     var ficha = document.getElementById('chip');
     var clock = document.getElementById('clockdiv');
-   // var setMovement =  document.getElementById('kinput');
     var canvasMove = document.getElementById('can').getContext('2d');
+    var audio = document.createElement("audio");
+    audio.src = "../assets/music.mp3";
 
-    // setMovement.onkeyup = handleKeypress
     window.onkeyup = handleKeypress;
 
-
-
-    Game.run(context, ficha, clock, canvasMove);
+    Game.run(context, ficha, clock, canvasMove, audio);
 };
 
 
