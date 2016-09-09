@@ -5,7 +5,7 @@ var GRID_LENGTH = 8;
 var TIMEOUT = 600;
 var H_HOLE = 8;
 var V_HOLE = 9;
-tile_index = 1;//Math.floor((Math.random() * 4));
+tile_index = Math.floor((Math.random() * 4));
 lose = false;
 allMovements = [];
 
@@ -27,7 +27,6 @@ function handleKeypress(event) {
 
   switch(event.keyCode) {
         case 32: {
-          console.log(Game.arrowJump)
             Game.canvasMove.drawImage(Game.arrowJump, Game.canvasX, Game.canvasY);
             Game.countDraw++;
             Game.firstTime = false;
@@ -42,7 +41,6 @@ function handleKeypress(event) {
             break;
         }
         case 38: {
-            console.log(Game.arrowUp);
             Game.canvasMove.drawImage(Game.arrowUp, Game.canvasX, Game.canvasY);
             Game.countDraw++;
             Game.firstTime = false;
@@ -67,8 +65,7 @@ function handleKeypress(event) {
             //not a key we care about
             break;
         }
-    }
-   //   console.log(allMovements)
+      }
     }
 }
 
@@ -119,11 +116,7 @@ var map = {
 };
 
 movements = {
-  //allMovements: ['u', 'r', 'r', 'u', 'u', 'u', 'r', 'r', 'r', 'r', 'u', 'u', 'u', 'l', 'l', 'l', 'u'],
-  allMovements,//: ['u','r', 'u', 'j', 'r', 'j', 'r', 'u', 'u', 'j', 'l', 'j', 'u', 'u'],//, 'u', 'j', 'l', 'r', 'j', 'd', 'u', 'j', 'l', 'j'],
-  // allMovements: [ 'u', 'l', 'r','r', 'u', 'u', 'u', 'r','r','r','r', 'd' , 'r', 'u','d', 'u','u', 'u', 'l',
-  //                 'l', 'l','l','u','u' ], //r','l', 'd', 'u', 'j'
-  //*/
+  allMovements,
   getMovement: function(pos){
     return this.allMovements[pos];
   },
@@ -167,6 +160,9 @@ Game.init = function () {
     this.h = Loader.getImage('h_hole');
     this.v = Loader.getImage('v_hole');
     this.npc = Loader.getImage('npc');
+
+    
+    this.chip.style.transition = 'none';
     if (tile_index == 0){
       this.posX = 0;
       this.posY = 8;
@@ -193,8 +189,7 @@ Game.init = function () {
       this.winPosY=0;
       this.chip.style.left = '546px';
     }
-
-
+    
     this.canvasX = 0;
     this.canvasY = 0;
     this.countDraw = 0;
@@ -251,7 +246,6 @@ Game.render = function () {
 };
 
 Game._drawGrid = function () {
-  console.log('hooolaaa');
     var width = map.cols * map.tsize;
     var height = map.rows * map.tsize;
 
@@ -282,30 +276,24 @@ Game.moveChip = function (num, bounce, jump, in_hole, timeout, cont, lastMovemen
     var movement = movements.getMovement(num);
 
     if (!bounce && !jump && !in_hole){
-        console.log(movement)
+       
       switch(movement){
         case 'u':
-          console.log(Game.posX, Game.posY, map.getTileAux(Game.posX, Game.posY-1), validMovement('u', Game.posX, Game.posY), !(isAPit(Game.posX, Game.posY-1)) )
           if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY) &&
               !(isAPit(Game.posX, Game.posY-1))){
 
               this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
               Game.posY -= 1;
-              console.log('a')
           }else if (movement == 'u' && !(isAPit(Game.posX, Game.posY-1))) {
-
               moveUp();
               cont++;
               bounce = true;
-              console.log('b')
-
+            
           }  else if(isAPit(Game.posX, Game.posY-1)){
 
               this.chip.style.bottom = parseInt(this.chip.style.bottom) + TILE_SIZE + 'px';
               Game.posY -= 1;
               in_hole = true;
-              console.log('c')
-
           }
           break;
         case 'd':
@@ -739,12 +727,14 @@ loseOrWin = function (){
   }
 
   document.getElementById('user_won').value = !lose;
-  console.log(document.getElementById('user_won').value, 'user_won', lose);
+  
+  Game.audio.pause();
+
   if(lose){
     allMovements = [];
     setTimeout(
       function() {
-
+        
         swal({ title: "YOU lose", text: "",
            timer: 2500, showConfirmButton: false }
              )}, 1000);
@@ -754,6 +744,7 @@ loseOrWin = function (){
   } else {
     setTimeout(
       function() {
+        
         swal({ title: "YOU WIN", text: "",
            timer: 2500, showConfirmButton: false }
              )}, 1000);
@@ -761,7 +752,7 @@ loseOrWin = function (){
           $('#myModal').modal('show')}, 3500);
 
   }
-
+  Game.audio.pause();
 
 }
 
@@ -791,14 +782,13 @@ Game.initClock = function (id, endtime) {
 
       setTimeout(function() {
         hideMovements();
-        var audio = document.createElement("audio");
-        audio.src = "../assets/music.mp3";
-        audio.volume = 0.5;
-        audio.play();
+        
+        Game.audio.volume = 0.5;
+        Game.audio.play();
 
+        this.chip.style.transition = 'all 1s ease';
         Game.moveChip(0, false, false, false, TIMEOUT, 0, 'start', 'none');
 
-        //Game.moveChip(0, false, 600, 0);
       }, 2500);
     }
   }

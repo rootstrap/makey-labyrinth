@@ -42,28 +42,28 @@
       <div class="date-modal-body modal-body">
         <%= form_for @user, url: users_path, remote: true, method: :post do |f| %>
           <div class="form-group">
-            <%= f.label :nombre, class: 'user-form' %>
+            <%= f.label :Nombre, class: 'user-form' %>
             <%= f.text_field :name %>
           </div>
           <div class='block-form'>
-            <%= f.label :apellido, class: 'user-form' %>
+            <%= f.label :Apellido, class: 'user-form' %>
             <%= f.text_field :last_name %>
           </div>
           <div class='block-form'>
-            <%= f.label :email, class: 'user-form' %>
+            <%= f.label :Email, class: 'user-form' %>
             <%= f.text_field :email %>
           </div>
           <div class='block-form'>
-            <%= f.label :dirección, class: 'user-form' %>
+            <%= f.label :Dirección, class: 'user-form' %>
             <%= f.text_field :address %>
           </div>
           <div class='block-form'>
-            <%= f.label :carrera, class: 'user-form' %>
+            <%= f.label :Carrera, class: 'user-form' %>
             <%= f.text_field :career %>
           </div>
           <%= f.hidden_field(:won, {value: "-1"}) %>
           <div class="modal-footer">
-            <%= f.submit "Jugar", class: "user-button" %>
+            <%= f.submit "Registrarse", class: "btn btn-primary" %>
             <div class="clearfix"></div>
           </div>
         <% end %>
