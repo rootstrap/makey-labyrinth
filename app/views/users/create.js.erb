@@ -2,6 +2,7 @@ if (<%= @user.errors.empty? %>) {
   $('#myModal').modal('hide');
 
   status = 1;
+  playedCounter = 0;
   tile_index = Math.floor((Math.random() * 4));
   lose = false;
   allMovements = [];
@@ -11,9 +12,10 @@ if (<%= @user.errors.empty? %>) {
       return this.allMovements[pos];
     },
   }
+  $('#movementCanvas')[0].getContext('2d').clearRect(0, 0, movementCanvas.width, movementCanvas.height);
+  $(".restart-button").removeAttr('disabled');
+  $('#card-movements').attr('class', 'card');
 
-  $('#can')[0].getContext('2d').clearRect(0, 0, can.width, can.height);
-  $('#right').attr('class', 'movements-container');
   $('#chip').css( {transform: 'scale(1.0)'} );
   $('#user_name').val('');
   $('#user_last_name').val('');
