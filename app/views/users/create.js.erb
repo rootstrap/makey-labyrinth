@@ -12,8 +12,10 @@ if (<%= @user.errors.empty? %>) {
     },
   }
 
-  $('#can')[0].getContext('2d').clearRect(0, 0, can.width, can.height);
+  $('#movementCanvas')[0].getContext('2d').clearRect(0, 0, movementCanvas.width, movementCanvas.height);
   $('#right').attr('class', 'movements-container');
+  $('#cardMovements').attr('class', 'card');
+  
   $('#chip').css( {transform: 'scale(1.0)'} );
   $('#user_name').val('');
   $('#user_last_name').val('');

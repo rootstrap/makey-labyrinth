@@ -346,8 +346,10 @@ getTimeRemaining = function (endtime) {
 }
 
 hideMovements = function (){
-  var movementDiv = $('#right');
+  // var movementDiv = $('#right');
+  var movementDiv = $('#cardMovements');
   movementDiv.attr('class', movementDiv.attr('class') + ' hidden')
+  console.log(movementDiv);
 
 }
 
