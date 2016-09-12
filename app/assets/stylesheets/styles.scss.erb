@@ -12,7 +12,7 @@ body {
   height: 100%;
 }
 
-#toptier-logo {
+.main-toptier-logo {
   background-color: #005287;
   display: flex;
   position: absolute;
@@ -29,70 +29,45 @@ body {
   }
 }
 
-#demo, #can {
+.main-wrapper {
+  display: flex;
+  background-color: #eaeaea;
+  height: 100%;
+  padding-left: 23em;
+  padding-right: 1em;
+  margin: 0 auto;
+}
+
+.canvas-draw {
     display: inherit;
     margin: 0 auto;
     background: #000;
 }
 
-.main-wrapper {
-  display: flex;
-  background-color: #eaeaea;
-  height: 100%;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin: 0 auto;
-}
-
 .labyrinth-container {
-  display: inline-block;
-  margin: auto;
   position: relative;
-}
-
-.main-header, .main-footer {
-  text-align: center;
+  /*flex-grow: 1;*/
 }
 
 .subtitle {
   font-size: 1.5em;
 }
 
-.main-header {
-  margin-top: 0;
-  margin-bottom: 2em;
-}
-
-.main-header h1 {
-  margin: 0;
-  background: #6e8882;
-  padding: 0.5em 1em;
-}
-
-.main-header a {
-  color: #000;
-  text-decoration: none;
-}
-
-.main-footer {
-  margin-top: 2em;
-}
-
-.ficha-container {
+.chip-container {
   position: absolute;
   width: 624px;
+  height: 624px;
   top: 0;
   bottom: 0;
   left: 50%;
   margin-left: -312px;
 }
 
-.ficha {
+.chip {
   position: absolute;
   display: inline-block;
   width: 77px;
   height: 77px;
-  /*background: red;*/
   background-image: url("<%= asset_path('character.png') %>");
   bottom: -78px;
   left: 0;
@@ -100,38 +75,25 @@ body {
 
 }
 
-.center {
+/*.center {
   margin: auto;
   width: 50%;
   border: none;
   padding: 10px;
-}
+}*/
 
-#left {
-  position: relative;
-  float: left;
-  left: 7%;
-  top: 0px;
-  width: 0px;
-  bottom: 0px;
-  background: #ffffff
-}
 
-#right {
+.movements-container {
   background-color: white;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 350px;
+  display: inline-block;
   padding: 0 15px;
+  width: 350px;
 }
 
 .card {
   background-color: white;
   padding: 25px 15px;
   width: 100%;
-  position: absolute;
   top: 0;
   left: 0;
   -o-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -140,7 +102,7 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-#clockdiv{
+.clock{
   font-family: sans-serif;
   color: #fff;
   display: inline-block;
@@ -151,20 +113,21 @@ body {
   border-radius: 3px;
   background: #00BF96;
   position: absolute;
-  left: -100px;
+  margin-left: -100px;
+
+  .clock-seconds-title{
+    padding: 15px;
+    border-radius: 3px;
+    background: #00816A;
+    display: inline-block;
+  }
+
+  .clock-text{
+    padding-top: 5px;
+    font-size: 16px;
+  }
 }
 
-#clockdiv span{
-  padding: 15px;
-  border-radius: 3px;
-  background: #00816A;
-  display: inline-block;
-}
-
-.smalltext{
-  padding-top: 5px;
-  font-size: 16px;
-}
 
 .hidden {
   visibility: hidden;

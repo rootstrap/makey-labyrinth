@@ -108,7 +108,7 @@ Game.tick = function (elapsed) {
 
     this.update(delta);
     this.render();
-    var deadline = new Date(Date.parse(new Date()) + 10 * 1000);
+    var deadline = new Date(Date.parse(new Date()) + 50 * 1000);
     Game.initClock('clockdiv', deadline);
 
 }.bind(Game);
