@@ -21,7 +21,7 @@ Game = {
     // clear previous frame
     self.ctx.clearRect(0, 0, 624, 688);
     self.render();
-    var deadline = new Date(Date.parse(new Date()) + 5 * 1000);
+    var deadline = new Date(Date.parse(new Date()) + 25 * 1000);
     self.initClock('clockdiv', deadline);
   }.bind(this),
 
@@ -113,7 +113,6 @@ Game = {
         var tile = map.getTileAux(c,r);
 
           if(tile == 1){
-            console.log(self);
             self.ctx.drawImage(self.solid, c * map.tsize, r * map.tsize);
           }
           if(tile == 2){
@@ -189,10 +188,12 @@ Game = {
 
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) + TILE_SIZE + 'px';
                 Game.posY -= 1;
+                Game.showMovement(movement);
             }else if (movement == 'u' && !(isAPit(Game.posX, Game.posY-1))) {
                 moveUp();
                 cont++;
                 bounce = true;
+                Game.showMovement(movement);
 
             }  else if(isAPit(Game.posX, Game.posY-1)){
 
@@ -206,10 +207,12 @@ Game = {
                 && !isAPit(Game.posX , Game.posY+1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) - TILE_SIZE + 'px';
                 Game.posY += 1
+                Game.showMovement(movement);
             } else if(movement == 'd' && !isAPit(Game.posX , Game.posY+1)) {
                 moveDown();
                 cont++;
                 bounce = true;
+                Game.showMovement(movement);
             }else if(isAPit(Game.posX , Game.posY+1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) - TILE_SIZE + 'px';
                 Game.posY += 1
@@ -222,12 +225,12 @@ Game = {
                 && !isAPit(Game.posX+1, Game.posY)) {
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
                 Game.posX += 1
-
+                Game.showMovement(movement);
             } else if( !isAPit(Game.posX+1, Game.posY) && movement == 'r') {
                 moveRight();
                 cont++;
                 bounce = true;
-
+                Game.showMovement(movement);
             } else if(isAPit(Game.posX+1, Game.posY)) {
 
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
@@ -241,10 +244,12 @@ Game = {
                 && !isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
               Game.posX -= 1
+              Game.showMovement(movement);
             } else if(movement == 'l' && !isAPit(Game.posX - 1 , Game.posY)) {
               moveLeft();
               cont++;
               bounce = true;
+              Game.showMovement(movement);
             }else if(isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
               Game.posX -= 1;
@@ -259,6 +264,7 @@ Game = {
                   self.chip.style.bottom = parseInt(self.chip.style.bottom) + TILE_SIZE + 'px';
                   Game.posY -= 1;
                   addJumpEffect();
+                  Game.showMovement(movement);
                   if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY)){
                     nextMovement = 'u';
                   } else if (map.getTileAux(Game.posX-1, Game.posY) !== 1 && validMovement('l', Game.posX, Game.posY)){
@@ -269,9 +275,11 @@ Game = {
                 } else {
                   addJumpEffect();
                   nextMovement = 'none';
+                  Game.showMovement(movement);
                 }
                 break;
               case 'u':
+                Game.showMovement(movement);
                 if (map.getTileAux(Game.posX, Game.posY) == 5){
                   nextMovement = jumpUp()
                 } else if (map.getTileAux(Game.posX, Game.posY) == 2){
@@ -281,6 +289,7 @@ Game = {
                 }
                 break;
               case 'd':
+                Game.showMovement(movement);
                 if (map.getTileAux(Game.posX, Game.posY) == 5){
                   nextMovement = jumpUp()
                 } else if (map.getTileAux(Game.posX, Game.posY) == 2){
@@ -290,6 +299,7 @@ Game = {
                 }
                 break;
               case 'l':
+                Game.showMovement(movement);
                 if (map.getTileAux(Game.posX, Game.posY) == 3){
                   nextMovement = jumpLeft()
                 } else if (map.getTileAux(Game.posX, Game.posY) == 2){
@@ -299,6 +309,7 @@ Game = {
                 }
                 break;
               case 'r':
+                Game.showMovement(movement);
                 if (map.getTileAux(Game.posX, Game.posY) == 3){
                   nextMovement = jumpRight()
                 } else if (map.getTileAux(Game.posX, Game.posY) == 4){
@@ -308,6 +319,7 @@ Game = {
                 }
                 break;
               case 'j':
+                Game.showMovement(movement);
                 addJumpEffect();
                 nextMovement = 'none';
               break;
@@ -369,9 +381,14 @@ Game = {
 
         lose = true
       }
-      if(lose || (num == movements.allMovements.length) ){
+
+      if(Game.posX == Game.winPosX && Game.posY == Game.winPosY){
+        loseOrWin();
+      }else if(lose || (num == movements.allMovements.length) ){
+        
         loseOrWin();
       } else if (in_hole){
+
         Game.moveChip(num, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement)
       } else if (bounce){
 
@@ -383,6 +400,7 @@ Game = {
 
         Game.moveChip(num+1, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement);
       } else if (in_hole){
+
         Game.moveChip(num, bounce, jump, in_hole, TIMEOUT, cont, lastMovement, nextMovement)
       }
     }, timeout);
@@ -467,12 +485,12 @@ Game = {
                timer: 2000, showConfirmButton: false });
 
         setTimeout(function() {
+          
           hideMovements();
-
           Game.audio.volume = 0.5;
           Game.audio.play();
-
           self.chip.style.transition = 'all 1s ease';
+          Game.resetCanvasMovements();
           Game.moveChip(0, false, false, false, TIMEOUT, 0, 'start', 'none');
 
         }, 2500);
@@ -481,6 +499,65 @@ Game = {
 
     updateClock();
     var timeinterval = setInterval(updateClock, 1000);
+  },
+
+  resetCanvasMovements: function(){
+    Game.countDraw = 0;
+    Game.firstTime = true;
+    Game.canvasX = 0;
+    Game.canvasY = 0;
+    $('#movementCanvas')[0].getContext('2d').clearRect(0, 0, movementCanvas.width, movementCanvas.height);
+  },
+
+  showMovement: function (movement){
+    if(Game.countDraw == 5){
+        Game.canvasX = 0;
+        Game.canvasY += 60;
+        Game.countDraw = 0;
+      }
+      else if(Game.countDraw < 5 && !Game.firstTime){
+        Game.canvasX += 60;
+      }
+      else if(Game.firstTime){
+        Game.canvasX = 0;
+      }
+
+    switch(movement) {
+          case 'j': {
+              Game.canvasMove.drawImage(Game.arrowJump, Game.canvasX, Game.canvasY);
+              Game.countDraw++;
+              Game.firstTime = false;
+              break;
+          }
+          case 'l': {
+              Game.canvasMove.drawImage(Game.arrowLeft, Game.canvasX, Game.canvasY);
+              Game.countDraw++;
+              Game.firstTime = false;
+              break;
+          }
+          case 'u': {
+              Game.canvasMove.drawImage(Game.arrowUp, Game.canvasX, Game.canvasY);
+              Game.countDraw++;
+              Game.firstTime = false;
+              break;
+          }
+          case 'r': {
+              Game.canvasMove.drawImage(Game.arrowRight, Game.canvasX, Game.canvasY);
+              Game.countDraw++;
+              Game.firstTime = false;
+              break;
+          }
+          case 'd': {
+              Game.canvasMove.drawImage(Game.arrowDown, Game.canvasX, Game.canvasY);
+              Game.countDraw++;
+              Game.firstTime = false;
+              break;
+          }
+          default: {
+              //not a key we care about
+              break;
+          }
+    }
   }
 
 }

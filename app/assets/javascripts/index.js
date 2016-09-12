@@ -19,7 +19,7 @@ var loadPage = function () {
     var context = $('#demo')[0].getContext('2d');
     var ficha = $('#chip')[0];
     var clock = $('#clockdiv')[0];
-    var canvasMove = $('#can')[0].getContext('2d');
+    var canvasMove = $('#movementCanvas')[0].getContext('2d');
     var audio = document.createElement("audio");
     audio.src = "../assets/music.mp3";
 

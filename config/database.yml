@@ -3,7 +3,7 @@ development:
   encoding: unicode
   database: makey_labyrinth-database
   pool: 5
-  username: toptier
+  username: toptierlabs
   password:
   host: localhost
   port: 5432
@@ -17,7 +17,7 @@ test:
   encoding: unicode
   database: makey_labyrinth-database-test
   pool: 5
-  username: toptier
+  username: toptierlabs
   password:
   host: localhost
   port: 5432
