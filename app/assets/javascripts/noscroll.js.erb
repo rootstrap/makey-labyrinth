@@ -767,7 +767,7 @@ function getTimeRemaining(endtime) {
 
 Game.initClock = function (id, endtime) {
   var clock = Game.clock;
-  var secondsSpan = Game.clock.querySelector('.seconds');
+  var secondsSpan = Game.clock.querySelector('.clock-seconds-title');
 
   function updateClock() {
     var t = getTimeRemaining(endtime);
@@ -784,7 +784,7 @@ Game.initClock = function (id, endtime) {
         hideMovements();
         
         Game.audio.volume = 0.5;
-        Game.audio.play();
+       // Game.audio.play();
 
         this.chip.style.transition = 'all 1s ease';
         Game.moveChip(0, false, false, false, TIMEOUT, 0, 'start', 'none');
