@@ -1,0 +1,28 @@
+Loader = {
+
+  images: {},
+
+  loadImage: function (key, src) {
+    var self = Loader;
+    var img = new Image();
+    var d = new Promise(function (resolve, reject) {
+      img.onload = function () {
+        self.images[key] = img;
+        resolve(img);
+      }.bind(self),
+
+      img.onerror = function () {
+        reject('Could not load image: ' + src);
+      };
+    }.bind(self));
+
+    img.src = src;
+    return d;
+  },
+
+  getImage: function (key) {
+    var self = Loader
+    return (key in self.images) ? self.images[key] : null;
+  }
+
+};
