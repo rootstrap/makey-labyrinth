@@ -21,20 +21,19 @@ Game = {
     // clear previous frame
     self.ctx.clearRect(0, 0, 624, 688);
     self.render();
-    var deadline = new Date(Date.parse(new Date()) + 25 * 1000);
-    self.initClock('clockdiv', deadline);
+    var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
+    self.initClock('clock-main', deadline);
   }.bind(this),
 
   load: function () {
       return [
-          Loader.loadImage('upLeft', "<%= asset_path('curvo1.jpg') %>"),
-          Loader.loadImage('downLeft', "<%= asset_path('curvo2.jpg') %>"),
-          Loader.loadImage('upRight', "<%= asset_path('curvo3.jpg') %>"),
-          Loader.loadImage('downRight', "<%= asset_path('curvo4.jpg') %>"),
-          Loader.loadImage('upDown', "<%= asset_path('recti1.jpg') %>"),
-          Loader.loadImage('leftRight', "<%= asset_path('recto2.jpg') %>"),
-          Loader.loadImage('tiles', "<%= asset_path('solido1.jpg') %>"),
-          Loader.loadImage('npc', "<%= asset_path('character.png') %>"),
+          Loader.loadImage('upLeft', "<%= asset_path('curvo1.png') %>"),
+          Loader.loadImage('downLeft', "<%= asset_path('curvo2.png') %>"),
+          Loader.loadImage('upRight', "<%= asset_path('curvo3.png') %>"),
+          Loader.loadImage('downRight', "<%= asset_path('curvo4.png') %>"),
+          Loader.loadImage('upDown', "<%= asset_path('recti1.png') %>"),
+          Loader.loadImage('leftRight', "<%= asset_path('recto2.png') %>"),
+          Loader.loadImage('npc', "<%= asset_path('ficha.png') %>"),
           Loader.loadImage('v_hole', "<%= asset_path('recti1hole.png') %>"),
           Loader.loadImage('h_hole', "<%= asset_path('recto2hole.png') %>"),
           Loader.loadImage('arrowLeft', "<%= asset_path('left.png') %>"),
@@ -42,6 +41,15 @@ Game = {
           Loader.loadImage('arrowUp', "<%= asset_path('up.png') %>"),
           Loader.loadImage('arrowDown', "<%= asset_path('down.png') %>"),
           Loader.loadImage('arrowJump', "<%= asset_path('jump.png') %>"),
+          Loader.loadImage('green', "<%= asset_path('verde.png') %>"),
+          Loader.loadImage('tree1', "<%= asset_path('arbol1.png') %>"),
+          Loader.loadImage('tree2', "<%= asset_path('arbol2.png') %>"),
+          Loader.loadImage('tree3', "<%= asset_path('arbol3.png') %>"),
+          Loader.loadImage('pennants', "<%= asset_path('banderines.png') %>"),
+          Loader.loadImage('stand1', "<%= asset_path('stand1.png') %>"),
+          Loader.loadImage('stand2', "<%= asset_path('stand2.png') %>"),
+          Loader.loadImage('stand3', "<%= asset_path('stand3.png') %>"),
+
       ];
   },
 
@@ -49,7 +57,15 @@ Game = {
   init: function () {
       var self = Game;
 
-      self.solid = Loader.getImage('tiles');
+      self.green = Loader.getImage('green');
+      self.tree1 = Loader.getImage('tree1');
+      self.tree2 = Loader.getImage('tree2');
+      self.tree3 = Loader.getImage('tree3');
+      self.pennants = Loader.getImage('pennants');
+      self.stand1 = Loader.getImage('stand1');
+      self.stand2 = Loader.getImage('stand2');
+      self.stand3 = Loader.getImage('stand3');
+
       self.upLeft = Loader.getImage('upLeft');
       self.downLeft = Loader.getImage('downLeft');
       self.upRight = Loader.getImage('upRight');
@@ -72,26 +88,26 @@ Game = {
         self.posY = 8;
         self.winPosX = 3;
         self.winPosY = 0;
-        self.chip.style.left = '0px';
+        self.chip.style.left = '10px';
 
       } else if (tile_index == 1){
         self.posX = 0;
         self.posY = 8;
         self.winPosX=4;
         self.winPosY=0;
-        self.chip.style.left = '0px';
+        self.chip.style.left = '10px';
       } else if (tile_index == 2){
         self.posX = 3;
         self.posY = 8;
         self.winPosX=4;
         self.winPosY=0;
-        self.chip.style.left = '234px';
+        self.chip.style.left = '244px';
       } else if(tile_index == 3){
         self.posX = 7;
         self.posY = 8;
         self.winPosX=5;
         self.winPosY=0;
-        self.chip.style.left = '546px';
+        self.chip.style.left = '556px';
       }
 
       self.canvasX = 0;
@@ -99,8 +115,9 @@ Game = {
       self.countDraw = 0;
       self.firstTime = true;
       self.canSetMovement = true;
+      self.playedCounter = 0;
 
-      self.chip.style.bottom = '-' + TILE_SIZE + 'px';
+      self.chip.style.bottom = '-' + 70 + 'px';
 
       self.timeout = TIMEOUT;
 
@@ -113,7 +130,7 @@ Game = {
         var tile = map.getTileAux(c,r);
 
           if(tile == 1){
-            self.ctx.drawImage(self.solid, c * map.tsize, r * map.tsize);
+            self.ctx.drawImage(self.green, c * map.tsize, r * map.tsize);
           }
           if(tile == 2){
             self.ctx.drawImage(self.downRight, c * map.tsize, r * map.tsize);
@@ -139,8 +156,42 @@ Game = {
           if(tile == 9){
             self.ctx.drawImage(self.v, c * map.tsize, r * map.tsize);
           }
+          if(tile == 20){
+
+            self.ctx.drawImage(self.tree1, c * map.tsize, r * map.tsize);
+
+          }
+          if(tile == 21){
+            self.ctx.drawImage(self.tree2, c * map.tsize, r * map.tsize);
+          }
+          if(tile == 22){
+            self.ctx.drawImage(self.tree3, c * map.tsize, r * map.tsize);
+          }
+          if(tile == 23){
+            self.ctx.drawImage(self.pennants, c * map.tsize, r * map.tsize);
+          }
+          if(tile == 24){
+            self.ctx.drawImage(self.stand1, c * map.tsize, r * map.tsize);
+          }
+          if(tile == 25){
+            self.ctx.drawImage(self.stand2, c * map.tsize, r * map.tsize);
+          }
+          if(tile == 26){
+            self.ctx.drawImage(self.stand3, c * map.tsize, r * map.tsize);
+          }
       }
     }
+
+    self.tree1 = Loader.getImage('tree1');
+      self.tree2 = Loader.getImage('tree2');
+      self.tree3 = Loader.getImage('tree3');
+      self.pennants = Loader.getImage('pennants');
+      self.stand1 = Loader.getImage('stand1');
+      self.stand2 = Loader.getImage('stand2');
+      self.stand3 = Loader.getImage('stand3');
+
+
+
 
     self._drawGrid();
   },
@@ -173,6 +224,18 @@ Game = {
 
   },
 
+  invalidate: function(x, y){
+    return (map.getTileAux(x,y) !== 1 && map.getTileAux(x,y) < 20);
+    // return (map.getTileAux(x,y) !== 1 &&
+    //        map.getTileAux(x,y) !== 20 &&
+    //        map.getTileAux(x,y) !== 21 &&
+    //        map.getTileAux(x,y) !== 22 &&
+    //        map.getTileAux(x,y) !== 23 &&
+    //        map.getTileAux(x,y) !== 24 &&
+    //        map.getTileAux(x,y) !== 25 &&
+    //        map.getTileAux(x,y) !== 26)
+  },
+
   moveChip: function (num, bounce, jump, in_hole, timeout, cont, lastMovement, nextMovement) {
    var self = Game;
 
@@ -183,7 +246,9 @@ Game = {
 
         switch(movement){
           case 'u':
-            if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY) &&
+            console.log('u', map.getTileAux(Game.posX, Game.posY-1));
+
+            if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && Game.invalidate(Game.posX, Game.posY-1)  && validMovement('u', Game.posX, Game.posY) &&
                 !(isAPit(Game.posX, Game.posY-1))){
 
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) + TILE_SIZE + 'px';
@@ -203,7 +268,8 @@ Game = {
             }
             break;
           case 'd':
-            if (map.getTileAux(Game.posX , Game.posY+1) !== 1 && validMovement('d', Game.posX, Game.posY)
+            console.log('d', map.getTileAux(Game.posX, Game.posY+1));
+            if (map.getTileAux(Game.posX , Game.posY+1) !== 1 && Game.invalidate(Game.posX, Game.posY+1) && validMovement('d', Game.posX, Game.posY)
                 && !isAPit(Game.posX , Game.posY+1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) - TILE_SIZE + 'px';
                 Game.posY += 1
@@ -219,9 +285,19 @@ Game = {
                 in_hole = true;
             }
             break;
-          case 'r':
 
-            if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && validMovement('r', Game.posX, Game.posY)
+          case 'r':
+            console.log('r', map.getTileAux(Game.posX+1, Game.posY));
+
+            // console.log(map.getTileAux(Game.posX+1, Game.posY) !== 1);
+            // console.log('sin !',(map.getTileAux(Game.posX, Game.posY-1) >= 20))
+            // console.log('con !',!(map.getTileAux(Game.posX, Game.posY-1) >= 20))
+            // console.log((map.getTileAux(Game.posX, Game.posY-1) <= 26))
+            // console.log(validMovement('r', Game.posX, Game.posY));
+            // console.log(!isAPit(Game.posX+1, Game.posY));
+            //(map.getTileAux(Game.posX, Game.posY-1) >= 20 && map.getTileAux(Game.posX, Game.posY-1) <= 26)
+
+            if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && Game.invalidate(Game.posX+1, Game.posY) && validMovement('r', Game.posX, Game.posY)
                 && !isAPit(Game.posX+1, Game.posY)) {
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
                 Game.posX += 1
@@ -239,8 +315,10 @@ Game = {
 
             }
             break;
+
           case 'l':
-            if(map.getTileAux(Game.posX - 1 , Game.posY) !== 1 && validMovement('l', Game.posX, Game.posY)
+            console.log('l',map.getTileAux(Game.posX - 1 , Game.posY));
+            if(map.getTileAux(Game.posX - 1 , Game.posY) !== 1 && Game.invalidate(Game.posX - 1, Game.posY) && validMovement('l', Game.posX, Game.posY)
                 && !isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
               Game.posX -= 1
@@ -256,6 +334,7 @@ Game = {
               in_hole = true;
             }
             break;
+
           case 'j':
             jump = true;
             switch(lastMovement){
@@ -265,11 +344,11 @@ Game = {
                   Game.posY -= 1;
                   addJumpEffect();
                   Game.showMovement(movement);
-                  if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && validMovement('u', Game.posX, Game.posY)){
+                  if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && Game.invalidate(Game.posX, Game.posY-1) && validMovement('u', Game.posX, Game.posY)){
                     nextMovement = 'u';
-                  } else if (map.getTileAux(Game.posX-1, Game.posY) !== 1 && validMovement('l', Game.posX, Game.posY)){
+                  } else if (map.getTileAux(Game.posX-1, Game.posY) !== 1 && Game.invalidate(Game.posX - 1, Game.posY) && validMovement('l', Game.posX, Game.posY)){
                     nextMovement = 'l';
-                  } else if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && validMovement('r', Game.posX, Game.posY)){
+                  } else if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && Game.invalidate(Game.posX + 1, Game.posY) && validMovement('r', Game.posX, Game.posY)){
                     nextMovement = 'r';
                   }
                 } else {
@@ -372,20 +451,18 @@ Game = {
             Game.posX += 1;
             break;
           default:
-            console.log(nextMovement, 'entre aca');
             break;
         }
         removeJumpEffect();
       } else if (in_hole) {
-        self.chip.style.transform = 'scale(0.5) rotate(360deg)';
-
+        self.chip.style.transform = 'rotate(360deg) scale(0.5)';
         lose = true
       }
 
       if(Game.posX == Game.winPosX && Game.posY == Game.winPosY){
         loseOrWin();
       }else if(lose || (num == movements.allMovements.length) ){
-        
+
         loseOrWin();
       } else if (in_hole){
 
@@ -472,33 +549,31 @@ Game = {
 
     var clock = Game.clock;
     var secondsSpan = Game.clock.querySelector('.clock-seconds-title');
-
     function updateClock() {
       var t = getTimeRemaining(endtime);
       secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
       if (t.total <= 0) {
-        clearInterval(timeinterval);
+        clearInterval(window.timeinterval);
         Game.canSetMovement = false;
 
         swal({ title: "A jugar!", text: "A ver si tienes suerte",
                timer: 2000, showConfirmButton: false });
 
         setTimeout(function() {
-          
+
           hideMovements();
           Game.audio.volume = 0.5;
           Game.audio.play();
           self.chip.style.transition = 'all 1s ease';
+
           Game.resetCanvasMovements();
           Game.moveChip(0, false, false, false, TIMEOUT, 0, 'start', 'none');
 
         }, 2500);
       }
     }
-
     updateClock();
-    var timeinterval = setInterval(updateClock, 1000);
+    window.timeinterval = setInterval(updateClock, 1000);
   },
 
   resetCanvasMovements: function(){
@@ -523,40 +598,40 @@ Game = {
       }
 
     switch(movement) {
-          case 'j': {
-              Game.canvasMove.drawImage(Game.arrowJump, Game.canvasX, Game.canvasY);
-              Game.countDraw++;
-              Game.firstTime = false;
-              break;
-          }
-          case 'l': {
-              Game.canvasMove.drawImage(Game.arrowLeft, Game.canvasX, Game.canvasY);
-              Game.countDraw++;
-              Game.firstTime = false;
-              break;
-          }
-          case 'u': {
-              Game.canvasMove.drawImage(Game.arrowUp, Game.canvasX, Game.canvasY);
-              Game.countDraw++;
-              Game.firstTime = false;
-              break;
-          }
-          case 'r': {
-              Game.canvasMove.drawImage(Game.arrowRight, Game.canvasX, Game.canvasY);
-              Game.countDraw++;
-              Game.firstTime = false;
-              break;
-          }
-          case 'd': {
-              Game.canvasMove.drawImage(Game.arrowDown, Game.canvasX, Game.canvasY);
-              Game.countDraw++;
-              Game.firstTime = false;
-              break;
-          }
-          default: {
-              //not a key we care about
-              break;
-          }
+      case 'j': {
+        Game.canvasMove.drawImage(Game.arrowJump, Game.canvasX, Game.canvasY);
+        Game.countDraw++;
+        Game.firstTime = false;
+        break;
+      }
+      case 'l': {
+        Game.canvasMove.drawImage(Game.arrowLeft, Game.canvasX, Game.canvasY);
+        Game.countDraw++;
+        Game.firstTime = false;
+        break;
+      }
+      case 'u': {
+        Game.canvasMove.drawImage(Game.arrowUp, Game.canvasX, Game.canvasY);
+        Game.countDraw++;
+        Game.firstTime = false;
+        break;
+      }
+      case 'r': {
+        Game.canvasMove.drawImage(Game.arrowRight, Game.canvasX, Game.canvasY);
+        Game.countDraw++;
+        Game.firstTime = false;
+        break;
+      }
+      case 'd': {
+        Game.canvasMove.drawImage(Game.arrowDown, Game.canvasX, Game.canvasY);
+        Game.countDraw++;
+        Game.firstTime = false;
+        break;
+      }
+      default: {
+        //not a key we care about
+        break;
+      }
     }
   }
 

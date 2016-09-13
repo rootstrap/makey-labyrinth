@@ -68,22 +68,15 @@ body {
 .chip {
   position: absolute;
   display: inline-block;
-  width: 77px;
-  height: 77px;
-  background-image: url("<%= asset_path('character.png') %>");
-  bottom: -78px;
-  left: 0;
+  /*width: 77px;*/
+  width: 56px;
+  height: 59px;
+  background-image: url("<%= asset_path('ficha.png') %>");
+  bottom: -70px;
+  left: 10;
   transition: all 1s ease;
 
 }
-
-/*.center {
-  margin: auto;
-  width: 50%;
-  border: none;
-  padding: 10px;
-}*/
-
 
 .movements-container {
   background-color: white;
@@ -131,10 +124,20 @@ body {
   }
 }
 
-
 .hidden {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s 2s, opacity 2s linear;
 }
-
+/*
+.restart-button{
+  float: right;
+  border: 1px outset black;
+  background-color: black;
+  height:40px;
+  width:100px;
+  cursor:pointer;
+  font-size: 12pt;
+  font-family: Lato, sans-serif;
+  color: white;
+}*/
