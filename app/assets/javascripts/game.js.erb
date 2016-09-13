@@ -21,7 +21,7 @@ Game = {
     // clear previous frame
     self.ctx.clearRect(0, 0, 624, 688);
     self.render();
-    var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
+    var deadline = new Date(Date.parse(new Date()) + 5 * 1000);
     self.initClock('clock-main', deadline);
   }.bind(this),
 
@@ -226,14 +226,6 @@ Game = {
 
   invalidate: function(x, y){
     return (map.getTileAux(x,y) !== 1 && map.getTileAux(x,y) < 20);
-    // return (map.getTileAux(x,y) !== 1 &&
-    //        map.getTileAux(x,y) !== 20 &&
-    //        map.getTileAux(x,y) !== 21 &&
-    //        map.getTileAux(x,y) !== 22 &&
-    //        map.getTileAux(x,y) !== 23 &&
-    //        map.getTileAux(x,y) !== 24 &&
-    //        map.getTileAux(x,y) !== 25 &&
-    //        map.getTileAux(x,y) !== 26)
   },
 
   moveChip: function (num, bounce, jump, in_hole, timeout, cont, lastMovement, nextMovement) {
@@ -288,15 +280,6 @@ Game = {
 
           case 'r':
             console.log('r', map.getTileAux(Game.posX+1, Game.posY));
-
-            // console.log(map.getTileAux(Game.posX+1, Game.posY) !== 1);
-            // console.log('sin !',(map.getTileAux(Game.posX, Game.posY-1) >= 20))
-            // console.log('con !',!(map.getTileAux(Game.posX, Game.posY-1) >= 20))
-            // console.log((map.getTileAux(Game.posX, Game.posY-1) <= 26))
-            // console.log(validMovement('r', Game.posX, Game.posY));
-            // console.log(!isAPit(Game.posX+1, Game.posY));
-            //(map.getTileAux(Game.posX, Game.posY-1) >= 20 && map.getTileAux(Game.posX, Game.posY-1) <= 26)
-
             if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && Game.invalidate(Game.posX+1, Game.posY) && validMovement('r', Game.posX, Game.posY)
                 && !isAPit(Game.posX+1, Game.posY)) {
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
@@ -369,9 +352,10 @@ Game = {
                 break;
               case 'd':
                 Game.showMovement(movement);
+                console.log(movement, map.getTileAux(Game.posX, Game.posY));
                 if (map.getTileAux(Game.posX, Game.posY) == 5){
-                  nextMovement = jumpUp()
-                } else if (map.getTileAux(Game.posX, Game.posY) == 2){
+                  nextMovement = jumpDown()
+                } else if (map.getTileAux(Game.posX, Game.posY) == 7){
                   nextMovement = jumpRight()
                 } else if (map.getTileAux(Game.posX, Game.posY) == 6){
                   nextMovement = jumpLeft()

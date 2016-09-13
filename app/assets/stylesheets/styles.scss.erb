@@ -15,7 +15,7 @@ body {
 }
 
 .main-toptier-logo {
-  background-color: #005287;
+  background-color: white;
   display: flex;
   position: absolute;
   top: 0;
@@ -48,6 +48,7 @@ body {
 
 .labyrinth-container {
   position: relative;
+  margin-top: 15px;
   /*flex-grow: 1;*/
 }
 
@@ -68,7 +69,6 @@ body {
 .chip {
   position: absolute;
   display: inline-block;
-  /*width: 77px;*/
   width: 56px;
   height: 59px;
   background-image: url("<%= asset_path('ficha.png') %>");
@@ -129,15 +129,4 @@ body {
   opacity: 0;
   transition: visibility 0s 2s, opacity 2s linear;
 }
-/*
-.restart-button{
-  float: right;
-  border: 1px outset black;
-  background-color: black;
-  height:40px;
-  width:100px;
-  cursor:pointer;
-  font-size: 12pt;
-  font-family: Lato, sans-serif;
-  color: white;
-}*/
+
