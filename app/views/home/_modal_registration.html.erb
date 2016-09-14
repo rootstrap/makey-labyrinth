@@ -1,0 +1,40 @@
+<div id="register-modal" class="modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content registration-modal">
+      <section class="logo-section">
+        
+      </section>
+
+      <section class="form-section">
+        <h1 class="modal-title">Ingresa tus datos</h1>
+        <span class="separator"></span>
+
+        <%= form_for @user, url: users_path, remote: true, method: :post do |f| %>
+          <div class="block-form">
+            <%= f.label :Nombre, class: 'user-form' %>
+            <%= f.text_field :name, required: true %>
+          </div>
+          <div class="block-form">
+            <%= f.label :Apellido, class: 'user-form' %>
+            <%= f.text_field :last_name,  required: true %>
+          </div>
+          <div class="block-form">
+            <%= f.label :Email, class: 'user-form' %>
+            <%= f.email_field :email,  required: true %>
+          </div>
+          <div class="block-form">
+            <%= f.label :Dirección, class: 'user-form' %>
+            <%= f.text_field :address %>
+          </div>
+          <div class="block-form">
+            <%= f.label :Carrera, class: 'user-form' %>
+            <%= f.text_field :career %>
+          </div>
+          <%= f.hidden_field(:won, {value: "-1"}) %>
+          <%= f.submit "Registrarse", class: "modal-button button-registration" %>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>
