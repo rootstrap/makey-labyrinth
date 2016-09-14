@@ -238,28 +238,24 @@ Game = {
 
         switch(movement){
           case 'u':
-           
             if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && Game.invalidate(Game.posX, Game.posY-1)  && validMovement('u', Game.posX, Game.posY) &&
                 !(isAPit(Game.posX, Game.posY-1))){
 
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) + TILE_SIZE + 'px';
                 Game.posY -= 1;
                 Game.showMovement(movement);
-            }else if (movement == 'u' && !(isAPit(Game.posX, Game.posY-1))) {
+            } else if (movement == 'u' && !(isAPit(Game.posX, Game.posY-1))) {
                 moveUp();
                 cont++;
                 bounce = true;
                 Game.showMovement(movement);
-
-            }  else if(isAPit(Game.posX, Game.posY-1)){
-
+            } else if(isAPit(Game.posX, Game.posY-1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) + TILE_SIZE + 'px';
                 Game.posY -= 1;
                 in_hole = true;
             }
             break;
           case 'd':
-           
             if (map.getTileAux(Game.posX , Game.posY+1) !== 1 && Game.invalidate(Game.posX, Game.posY+1) && validMovement('d', Game.posX, Game.posY)
                 && !isAPit(Game.posX , Game.posY+1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) - TILE_SIZE + 'px';
@@ -278,7 +274,6 @@ Game = {
             break;
 
           case 'r':
-            
             if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && Game.invalidate(Game.posX+1, Game.posY) && validMovement('r', Game.posX, Game.posY)
                 && !isAPit(Game.posX+1, Game.posY)) {
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
@@ -290,16 +285,13 @@ Game = {
                 bounce = true;
                 Game.showMovement(movement);
             } else if(isAPit(Game.posX+1, Game.posY)) {
-
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
                 Game.posX += 1
                 in_hole = true;
-
             }
             break;
 
           case 'l':
-            
             if(map.getTileAux(Game.posX - 1 , Game.posY) !== 1 && Game.invalidate(Game.posX - 1, Game.posY) && validMovement('l', Game.posX, Game.posY)
                 && !isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
@@ -310,7 +302,7 @@ Game = {
               cont++;
               bounce = true;
               Game.showMovement(movement);
-            }else if(isAPit(Game.posX - 1 , Game.posY)){
+            } else if(isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
               Game.posX -= 1;
               in_hole = true;
