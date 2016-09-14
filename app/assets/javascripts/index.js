@@ -1,9 +1,23 @@
 status = 1
 playedCounter = 0
 
+
+
+
 var ready = function() {
   $(window).keyup(handleKeypressStart)
+ 
+
+
+  myVideo = document.getElementById("video1");
+  myVideo.autoplay = true;
+  myVideo.play();
+  document.querySelector("#video1").addEventListener('ended', function () {
+    console.count('loop restart');
+    this.play();
+  })
 }
+
 
 $(document).on('ready', ready);
 $(document).on('load', ready);
@@ -44,7 +58,7 @@ var restartPage = function(){
 
   $('#movementCanvas')[0].getContext('2d').clearRect(0, 0, movementCanvas.width, movementCanvas.height);
   // $('#right').attr('class', 'movements-container');
-  $('#chip').css( {transform: 'scale(1.0)'} );
+  $('#chip').css( {transform: 'rotate(-360deg) scale(1.0)'} );
   clearInterval(window.timeinterval);
   $('.restart-button').attr('disabled', true);
   loadPage();

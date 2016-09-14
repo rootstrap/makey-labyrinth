@@ -317,7 +317,6 @@ loseOrWin = function (){
  $('#user_won').val(!lose);
 
   Game.audio.pause();
-// "../assets/music.mp3";
 
   if(lose){
     allMovements = [];
@@ -345,6 +344,9 @@ loseOrWin = function (){
         )}, 1000);
 
   } else {
+    var audioWin = document.createElement("audio");
+    audioWin.src = "../assets/win.m4a";
+    audioWin.play()
     setTimeout(
       function() {
 

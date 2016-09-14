@@ -24,6 +24,13 @@ if (<%= @user.errors.empty? %>) {
   $('#user_career').val('');
   $('#user_won').val(false);
   $('#toptier-logo').fadeIn(1000);
+
+  myVideo = document.getElementById("video1");
+  myVideo.src = "../assets/tutorial.mov";
+  myVideo.load();
+  myVideo.play();
+
+
 } else {
   // Show errors
 }

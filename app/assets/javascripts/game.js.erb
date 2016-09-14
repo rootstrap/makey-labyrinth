@@ -21,7 +21,7 @@ Game = {
     // clear previous frame
     self.ctx.clearRect(0, 0, 624, 688);
     self.render();
-    var deadline = new Date(Date.parse(new Date()) + 5 * 1000);
+    var deadline = new Date(Date.parse(new Date()) + 15 * 1000);
     self.initClock('clock-main', deadline);
   }.bind(this),
 
@@ -238,8 +238,7 @@ Game = {
 
         switch(movement){
           case 'u':
-            console.log('u', map.getTileAux(Game.posX, Game.posY-1));
-
+           
             if (map.getTileAux(Game.posX, Game.posY-1) !== 1 && Game.invalidate(Game.posX, Game.posY-1)  && validMovement('u', Game.posX, Game.posY) &&
                 !(isAPit(Game.posX, Game.posY-1))){
 
@@ -260,7 +259,7 @@ Game = {
             }
             break;
           case 'd':
-            console.log('d', map.getTileAux(Game.posX, Game.posY+1));
+           
             if (map.getTileAux(Game.posX , Game.posY+1) !== 1 && Game.invalidate(Game.posX, Game.posY+1) && validMovement('d', Game.posX, Game.posY)
                 && !isAPit(Game.posX , Game.posY+1)){
                 self.chip.style.bottom = parseInt(self.chip.style.bottom) - TILE_SIZE + 'px';
@@ -279,7 +278,7 @@ Game = {
             break;
 
           case 'r':
-            console.log('r', map.getTileAux(Game.posX+1, Game.posY));
+            
             if (map.getTileAux(Game.posX+1, Game.posY) !== 1 && Game.invalidate(Game.posX+1, Game.posY) && validMovement('r', Game.posX, Game.posY)
                 && !isAPit(Game.posX+1, Game.posY)) {
                 self.chip.style.left = parseInt(self.chip.style.left) + TILE_SIZE + 'px';
@@ -300,7 +299,7 @@ Game = {
             break;
 
           case 'l':
-            console.log('l',map.getTileAux(Game.posX - 1 , Game.posY));
+            
             if(map.getTileAux(Game.posX - 1 , Game.posY) !== 1 && Game.invalidate(Game.posX - 1, Game.posY) && validMovement('l', Game.posX, Game.posY)
                 && !isAPit(Game.posX - 1 , Game.posY)){
               self.chip.style.left = parseInt(self.chip.style.left) - TILE_SIZE + 'px';
@@ -320,6 +319,9 @@ Game = {
 
           case 'j':
             jump = true;
+            var audioJump = document.createElement("audio");
+            audioJump.src = "../assets/jump.m4a";
+            audioJump.play();
             switch(lastMovement){
               case 'start':
                 if (isHoleUp(9,12,13)){
@@ -393,6 +395,9 @@ Game = {
           lastMovement = movement;
         }
       } else if (bounce) {
+        var audioBounce = document.createElement("audio");
+        audioBounce.src = "../assets/bounce.m4a";
+        audioBounce.play()
         switch(movement){
           case 'u':
             values = bounceUp(cont, bounce);
@@ -439,6 +444,9 @@ Game = {
         }
         removeJumpEffect();
       } else if (in_hole) {
+        var audioFall = document.createElement("audio");
+        audioFall.src = "../assets/fall.m4a";
+        audioFall.play();
         self.chip.style.transform = 'rotate(360deg) scale(0.5)';
         lose = true
       }
