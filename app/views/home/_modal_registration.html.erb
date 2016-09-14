@@ -3,7 +3,7 @@
     <!-- Modal content-->
     <div class="modal-content registration-modal">
       <section class="logo-section">
-        
+        <%= image_tag 'toptier_logo.png' %>
       </section>
 
       <section class="form-section">
@@ -23,14 +23,14 @@
             <%= f.label :Email, class: 'user-form' %>
             <%= f.email_field :email,  required: true %>
           </div>
-          <div class="block-form">
+          <!-- <div class="block-form">
             <%= f.label :Dirección, class: 'user-form' %>
             <%= f.text_field :address %>
           </div>
           <div class="block-form">
             <%= f.label :Carrera, class: 'user-form' %>
             <%= f.text_field :career %>
-          </div>
+          </div> -->
           <%= f.hidden_field(:won, {value: "-1"}) %>
           <%= f.submit "Registrarse", class: "modal-button button-registration" %>
         <% end %>
