@@ -1,0 +1,40 @@
+
+<div id='toptier-logo' class="main-toptier-logo" >
+  <%=image_tag("logo.png")%>
+   <video id="video1" autoplay="true" src="../assets/tutorial.mov" width="440" height="400">
+      
+    </video>
+</div>
+<div>
+  
+  </div>
+  <!-- Arriba el logo toptier -->
+
+<div class="main-wrapper" >
+  <div class="labyrinth-container">
+    <div id="clock-main" class="clock" >
+      <span class="clock-seconds-title"></span>
+      <div class="clock-text">Segundos</div>
+    </div>
+
+    <canvas id="demo" class="canvas-draw" width="624" height="624" style="background: white"></canvas>
+
+    <div class="chip-container">
+      <div id="chip" class="chip"></div>
+    </div>
+  </div>
+
+  <div class="movements-container">
+    <div id="card-movements" class="card">
+      <label>Introduce los pasos aquí para resolver el laberinto </label>
+    </div>
+    <div style="margin-top: -85px";>
+    <canvas class="canvas-draw" id="movementCanvas" width="330em" height="500em" style="background: transparent; margin-top: 110px;"></canvas>
+  </div>
+</div>
+ <!-- Laberinto arriba -->
+
+<%= render partial: 'modal_start' %>
+<%= render partial: 'modal_win' %>
+<%= render partial: 'modal_lose' %>
+<%= render partial: 'modal_registration' %>

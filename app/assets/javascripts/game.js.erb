@@ -21,7 +21,7 @@ Game = {
     // clear previous frame
     self.ctx.clearRect(0, 0, 624, 688);
     self.render();
-    var deadline = new Date(Date.parse(new Date()) + 15 * 1000);
+    var deadline = new Date(Date.parse(new Date()) + 12 * 1000);
     self.initClock('clock-main', deadline);
   }.bind(this),
 
@@ -548,11 +548,12 @@ Game = {
         clearInterval(window.timeinterval);
         Game.canSetMovement = false;
 
-        swal({ title: "A jugar!", text: "A ver si tienes suerte",
-               timer: 2000, showConfirmButton: false });
+        /**
+         * Start the notificaction modal and hide it 2 seconds later.
+        */
+        self.showStartModal();
 
         setTimeout(function() {
-
           hideMovements();
           Game.audio.volume = 0.5;
           Game.audio.play();
@@ -625,6 +626,15 @@ Game = {
         break;
       }
     }
+  },
+
+  showStartModal: function() {
+    var modal = $('#start-modal');
+    modal.modal('show');
+
+    setTimeout(function() {
+      modal.modal('hide');
+    }, 2000);
   }
 
 }

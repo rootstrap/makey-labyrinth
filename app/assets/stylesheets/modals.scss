@@ -1,0 +1,188 @@
+.modal.in .modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	height: 100%;
+  width: 100%;
+}
+
+.modal-dialog {
+	margin: 0 !important;
+}
+
+.modal-content {
+	border: none;
+	border-radius: 0;
+	color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+	padding: 30px;
+	text-align: center;
+	height: 75%;
+  width: 70%;
+
+  background: #207cca; /* Old browsers */
+	background: -moz-radial-gradient(center, ellipse cover, #207cca 0%, #003a7b 100%); /* FF3.6-15 */
+	background: -webkit-radial-gradient(center, ellipse cover, #207cca 0%,#003a7b 100%); /* Chrome10-25,Safari5.1-6 */
+	background: radial-gradient(ellipse at center, #207cca 0%,#003a7b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#207cca', endColorstr='#003a7b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.start-modal .modal-image {
+	background: url('/assets/logo-empezar.png') center center no-repeat;
+	background-size: contain;
+	height: 320px;
+	width: 100%;
+}
+
+.modal-button {
+	border: none;
+	border-radius: 10px;
+  color: white;
+  font-size: 34px;
+	font-weight: 400;
+}
+
+.win-modal {
+	
+	.modal-title {
+		font-size: 46px;
+		font-weight: 500;
+	}
+
+	.modal-image {
+		background: url('/assets/globo-ganaste.png') center center no-repeat;
+		background-size: contain;
+		height: 320px;
+		width: 100%;
+	}
+
+	div .modal-button-register {
+		background-color: #FFC500;
+		border: none;
+		border-radius: 10px;
+    width: 35%;
+    height: 65px;
+    color: white;
+    font-size: 34px;
+		font-weight: 400;
+	}
+}
+
+.lose-modal {
+
+	.modal-image {
+		background: url('/assets/globo-perdiste.png') center center no-repeat;
+		background-size: contain;
+		height: 320px;
+		width: 100%;
+	}
+
+	.modal-title {
+		font-size: 46px;
+		font-weight: 500;
+	}
+
+	div .modal-button-register {
+		background-color: #FFC500;
+		border: none;
+		border-radius: 10px;
+		margin-left: 20px;
+    width: 35%;
+    height: 65px;
+    color: white;
+    font-size: 34px;
+		font-weight: 400;
+	}
+
+	div .modal-button-restart {
+		border: none;
+		border-radius: 10px;
+    width: 35%;
+    height: 65px;
+    background-color: white;
+    color: #00629A;
+    font-size: 34px;
+		font-weight: 400;
+	}
+}
+
+.modal-title {
+	font-size: 46px;
+	font-weight: 100;
+}
+
+.modal-sub-title {
+	font-size: 32px;
+	font-weight: 100;
+	width: 50%;
+}
+
+
+.registration-modal {
+	display: flex;
+	flex-direction: row;
+	justify-content: initial;
+	padding: 0;
+
+	.modal-title {
+		color: #F6881C;
+		font-size: 30px;
+		font-weight: 300;
+	}
+
+	.separator {
+		display: block;
+		border: 1px solid #F6881C;
+    margin: 5px 0 15px 0;
+		width: 75px;
+	}
+
+	.logo-section {
+		background-color: #F6881C;
+		height: 100%;
+		width: 200px;
+	}
+
+	.form-section {
+		background-color: white;
+		color: #287DAA;
+		height: 100%;
+		padding: 15px 15px 15px 60px;
+		text-align: left;
+		width: 100%;
+	}
+
+	.button-registration {
+		background-color: #F6881C;
+		border-radius: 4px; 
+		font-size: 18px;
+		font-weight: 300;
+		margin-top: 15px;
+		padding: 9px 20px;
+	}
+}
+
+.block-form {
+	+ .block-form {
+		margin-bottom: 15px;
+	}
+
+	label {
+		display: block;
+		font-size: 16px; 
+    font-weight: bold;
+		margin: 0;
+		text-align: left;
+	}
+
+	input {
+		border: 1px solid #287DAA;
+		display: block;
+		font-size: 18px;
+		padding: 6px 12px; 
+		width: 50%;
+	}
+}

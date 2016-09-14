@@ -16,6 +16,10 @@ var ready = function() {
     console.count('loop restart');
     this.play();
   })
+
+  $('#restart-button').on('click', restartPage);
+  $('#register-button, #register-button-win').on('click', showRegisterModal);
+
 }
 
 
@@ -31,6 +35,7 @@ var handleKeypressStart = function (){
 }
 
 var loadPage = function () {
+    playedCounter = 0;
     var context = $('#demo')[0].getContext('2d');
     var ficha = $('#chip')[0];
     var clock = $('#clock-main')[0];
@@ -44,7 +49,7 @@ var loadPage = function () {
 };
 
 var restartPage = function(){
-
+  playedCounter++;
   lose = false;
   allMovements = [];
   movements = {
@@ -53,6 +58,7 @@ var restartPage = function(){
       return this.allMovements[pos];
     },
   }
+  $('#lose-modal').modal('hide');
 
   $('#card-movements').attr('class', 'card');
 
@@ -62,6 +68,13 @@ var restartPage = function(){
   clearInterval(window.timeinterval);
   $('.restart-button').attr('disabled', true);
   loadPage();
+}
+
+
+var showRegisterModal = function (){
+  $('#lose-modal').modal('hide');
+  $('#win-modal').modal('hide');
+  $('#register-modal').modal('show');
 }
 
 

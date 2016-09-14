@@ -4,5 +4,6 @@
 }
 
 body {
-  overflow: hidden
+  overflow: hidden;
+  font-family: Lato !important;
 }
