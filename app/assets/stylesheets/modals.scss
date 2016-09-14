@@ -136,7 +136,7 @@
 	.separator {
 		display: block;
 		border: 1px solid #F6881C;
-    margin: 5px 0 15px 0;
+    margin: 5px 0 50px 0;
 		width: 75px;
 	}
 
@@ -144,11 +144,19 @@
 		background-color: #F6881C;
 		height: 100%;
 		width: 200px;
+
+    img {
+      padding: 30px;
+      width: 150px;
+    }
 	}
 
 	.form-section {
 		background-color: white;
 		color: #287DAA;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 		height: 100%;
 		padding: 15px 15px 15px 60px;
 		text-align: left;
@@ -158,31 +166,32 @@
 	.button-registration {
 		background-color: #F6881C;
 		border-radius: 4px;
-		font-size: 18px;
+		font-size: 20px;
 		font-weight: 300;
-		margin-top: 15px;
+		margin-top: 50px;
 		padding: 9px 20px;
 	}
 }
 
 .block-form {
 	+ .block-form {
-		margin-bottom: 15px;
+		margin-top: 15px;
 	}
 
 	label {
 		display: block;
-		font-size: 16px;
+		font-size: 18px;
     font-weight: bold;
 		margin: 0;
+    margin-bottom: 5px;
 		text-align: left;
 	}
 
 	input {
 		border: 1px solid #287DAA;
 		display: block;
-		font-size: 18px;
+		font-size: 20px;
 		padding: 6px 12px;
-		width: 50%;
+		width: 60%;
 	}
 }
